@@ -15,7 +15,7 @@ const App: FC = () => {
 
         <Router>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/github-repo-searcher" element={<Home />} />
           </Routes>
         </Router>
       </ThemeProvider>
