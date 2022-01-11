@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 import {
   useSyncRouteQuery,
@@ -41,6 +41,10 @@ const Home: FC = () => {
   const handleLoadMore = () => {
     loadMore();
   };
+
+  useEffect(() => {
+    document.title = searchValue;
+  }, [searchValue]);
 
   return (
     <>
