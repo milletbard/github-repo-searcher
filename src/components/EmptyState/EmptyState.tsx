@@ -7,10 +7,14 @@ const EmptyStateWrapper = styled.div`
   text-align: center;
 `;
 
-const EmptyState: FC = () => (
+interface EmptyStateProps {
+  searchValue: string;
+}
+
+const EmptyState: FC<EmptyStateProps> = ({ searchValue }) => (
   <EmptyStateWrapper>
     <GoSearch style={{ fontSize: "36px" }} />
-    <h3>We couldn’t find any repositories matching 'repo name'</h3>
+    <h3>We couldn’t find any repositories matching '{searchValue}'</h3>
   </EmptyStateWrapper>
 );
 

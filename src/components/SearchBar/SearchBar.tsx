@@ -24,14 +24,21 @@ const SearchInput = styled.input`
     border-color: ${(props) => props.theme.colorBlue20};
   }
 `;
-const SearchBar: FC = () => {
+
+interface SearchBarProps {
+  value: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement> | undefined;
+}
+
+const SearchBar: FC<SearchBarProps> = ({ value, onChange }) => {
   const theme: IThemeType = useTheme();
 
   return (
     <SearchBarWrapper>
       <SearchInput
+        value={value}
+        onChange={onChange}
         theme={theme}
-        type="text"
         placeholder="Find a repository..."
       ></SearchInput>
     </SearchBarWrapper>

@@ -1,17 +1,51 @@
-import { FC } from "react";
+import { FC, useState } from "react";
+import { useDebounce } from "use-debounce";
+import {
+  useSyncRouteQuery,
+  useQueryParam,
+  useGithubRepositoryFetcher,
+} from "hooks";
 
 import { Header, Main } from "components/Layout";
 import { RepositoryList } from "components/RepositoryList";
 import { EmptyState } from "components/EmptyState";
 import { SearchBar } from "components/SearchBar";
-import { Skeleton } from "components/Skeleton";
+import { Skeletons } from "components/Skeleton";
 import { RevalidateButton } from "components/RevalidateButton";
 
 const Home: FC = () => {
+  const [query] = useQueryParam("q");
+  const [persistQueryValue] = useState(query);
+
+  const [value, setValue] = useState(persistQueryValue ?? "");
+  const [searchValue] = useDebounce(value, 500);
+
+  const {
+    repositories,
+    error,
+    isLoadingMore,
+    isEmpty,
+    isRefreshing,
+    loadMore,
+    revalidate,
+  } = useGithubRepositoryFetcher(searchValue);
+
+  useSyncRouteQuery(searchValue);
+
+  const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (
+    event
+  ) => {
+    setValue(event.target.value);
+  };
+
+  const handleLoadMore = () => {
+    loadMore();
+  };
+
   return (
     <>
       <Header>
-        <SearchBar />
+        <SearchBar value={value} onChange={handleInputChange} />
       </Header>
 
       <Main>
@@ -19,13 +53,26 @@ const Home: FC = () => {
           Repository Searcher
         </h2>
 
-        <RepositoryList />
+        {repositories.length !== 0 && (
+          <RepositoryList
+            repositories={repositories}
+            onLoadMore={handleLoadMore}
+          />
+        )}
 
-        <EmptyState />
+        {isEmpty && searchValue && !isLoadingMore && !error && (
+          <EmptyState searchValue={searchValue} />
+        )}
 
-        <Skeleton />
+        {isLoadingMore && searchValue && !error && <Skeletons />}
 
-        <RevalidateButton />
+        {error && (
+          <RevalidateButton
+            error={error}
+            isRefreshing={isRefreshing}
+            onClick={revalidate}
+          />
+        )}
       </Main>
     </>
   );

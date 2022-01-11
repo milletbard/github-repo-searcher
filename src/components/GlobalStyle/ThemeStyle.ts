@@ -8,6 +8,7 @@ export const darkTheme = {
   colorDark20: "#21262C",
   colorPrimary100: "#c9d1d9",
   colorPrimary50: "#8b949e",
+  colorBlue50: "#58a6ff",
   colorBlue20: "#1f6feb",
 };
 

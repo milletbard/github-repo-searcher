@@ -24,4 +24,14 @@ const Skeleton: FC = () => {
   );
 };
 
-export { Skeleton };
+const Skeletons: FC = () => {
+  return (
+    <>
+      <Skeleton />
+      <Skeleton />
+      <Skeleton />
+      <Skeleton />
+    </>
+  );
+};
+export { Skeletons };
