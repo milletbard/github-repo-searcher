@@ -39,7 +39,9 @@ const Home: FC = () => {
   };
 
   const handleLoadMore = () => {
-    loadMore();
+    if (!error) {
+      loadMore();
+    }
   };
 
   useEffect(() => {
